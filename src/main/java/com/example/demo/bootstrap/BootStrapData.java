@@ -44,30 +44,40 @@ public class BootStrapData implements CommandLineRunner {
             part1.setName("Magic Wand");
             part1.setInv(10);
             part1.setPrice(15.0);
+            part1.setMinInv(5);
+            part1.setMaxInv(20);
 
             OutsourcedPart part2 = new OutsourcedPart();
             part2.setCompanyName("Potion Co.");
             part2.setName("Potion Bottle");
             part2.setInv(20);
             part2.setPrice(5.0);
+            part2.setMinInv(10);
+            part2.setMaxInv(50);
 
             OutsourcedPart part3 = new OutsourcedPart();
             part3.setCompanyName("Spell Book Co.");
             part3.setName("Spell Book");
             part3.setInv(5);
             part3.setPrice(25.0);
+            part3.setMinInv(2);
+            part3.setMaxInv(15);
 
             OutsourcedPart part4 = new OutsourcedPart();
             part4.setCompanyName("Crystal Ball Co.");
             part4.setName("Crystal Ball");
             part4.setInv(8);
             part4.setPrice(40.0);
+            part4.setMinInv(3);
+            part4.setMaxInv(12);
 
             OutsourcedPart part5 = new OutsourcedPart();
             part5.setCompanyName("Broomstick Co.");
             part5.setName("Broomstick");
             part5.setInv(12);
             part5.setPrice(30.0);
+            part5.setMinInv(5);
+            part5.setMaxInv(25);
 
             partRepository.save(part1);
             partRepository.save(part2);

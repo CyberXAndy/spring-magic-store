@@ -73,6 +73,18 @@
         </div>
 
         <div class="mb-3">
+            <label for="minInv" class="form-label">Min Inventory</label>
+            <input type="text" id="minInv" th:field="*{minInv}" placeholder="Min Inventory" class="form-control"/>
+            <div th:if="${#fields.hasErrors('minInv')}" class="text-danger" th:errors="*{minInv}">Min Inventory Error</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="maxInv" class="form-label">Max Inventory</label>
+            <input type="text" id="maxInv" th:field="*{maxInv}" placeholder="Max Inventory" class="form-control"/>
+            <div th:if="${#fields.hasErrors('maxInv')}" class="text-danger" th:errors="*{maxInv}">Max Inventory Error</div>
+        </div>
+
+        <div class="mb-3">
             <label for="partId" class="form-label">Part ID</label>
             <p><input type="text" id="partId" th:field="*{partId}" placeholder="Part ID" class="form-control"/></p>
         </div>
