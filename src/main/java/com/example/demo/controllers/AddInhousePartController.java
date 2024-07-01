@@ -46,16 +46,24 @@ public class AddInhousePartController{
             theBindingResult.rejectValue("inv", "invalid.inventory", "Inventory must be between minInv and maxInv.");
         }
 
+        if (part.getInv() < part.getMinInv()) {
+            theBindingResult.rejectValue("inv", "low.inventory", "Low inventory: inventory is less than the minimum number of parts.");
+        }
+
+        if (part.getInv() > part.getMaxInv()) {
+            theBindingResult.rejectValue("inv", "high.inventory", "High inventory: inventory is greater than the maximum number of parts.");
+        }
+
         if (theBindingResult.hasErrors()) {
             return "InhousePartForm";
         }
         else{
-        InhousePartService repo=context.getBean(InhousePartServiceImpl.class);
-        InhousePart ip=repo.findById((int)part.getId());
-        if(ip!=null)part.setProducts(ip.getProducts());
+            InhousePartService repo=context.getBean(InhousePartServiceImpl.class);
+            InhousePart ip=repo.findById((int)part.getId());
+            if(ip!=null)part.setProducts(ip.getProducts());
             repo.save(part);
 
-        return "confirmationaddpart";}
+            return "confirmationaddpart";}
     }
 
 }
