@@ -96,7 +96,7 @@
 								<buildArg>--initialize-at-build-time=org.slf4j,ch.qos.logback</buildArg>
 								<buildArg>--initialize-at-run-time=org.springframework.boot.logging</buildArg>
 								<buildArg>-H:+UseSerialGC</buildArg>
-								<buildArg>-H:MaxHeapSize=2g</buildArg>
+								<buildArg>-Xmx2g</buildArg>
 								<buildArg>-J-Xmx4g</buildArg>
 								<buildArg>--verbose</buildArg>
 							</buildArgs>
