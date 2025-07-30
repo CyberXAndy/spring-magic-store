@@ -21,7 +21,7 @@ import java.util.Set;
 @Table(name="Parts")
 public abstract class Part implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     String name;
     @Min(value = 0, message = "Price value must be positive")
