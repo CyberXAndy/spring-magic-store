@@ -1,0 +1,41 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qapplication.properties\\E"
+      },
+      {
+        "pattern": "\\Qapplication.yml\\E"
+      },
+      {
+        "pattern": "\\Qapplication.yaml\\E"
+      },
+      {
+        "pattern": "\\Qdata.sql\\E"
+      },
+      {
+        "pattern": "\\Qschema.sql\\E"
+      },
+      {
+        "pattern": "\\Qtemplates/.*\\.html\\E"
+      },
+      {
+        "pattern": "\\Qstatic/.*\\E"
+      },
+      {
+        "pattern": "\\QValidationMessages.properties\\E"
+      },
+      {
+        "pattern": "\\Qorg/hibernate/validator/ValidationMessages.properties\\E"
+      }
+    ]
+  },
+  "bundles": [
+    {
+      "name": "ValidationMessages"
+    },
+    {
+      "name": "org.hibernate.validator.ValidationMessages"
+    }
+  ]
+}

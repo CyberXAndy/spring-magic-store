@@ -1,0 +1,41 @@
+[
+  {
+    "name": "com.example.demo.domain.Part",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.example.demo.domain.Product",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.example.demo.domain.InhousePart",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.example.demo.domain.OutsourcedPart",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "org.hibernate.validator.internal.engine.ValidatorImpl",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.hibernate.validator.internal.engine.constraintvalidation.ConstraintValidatorFactoryImpl",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  }
+]
