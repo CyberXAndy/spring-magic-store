@@ -40,6 +40,19 @@ public class AddInhousePartController{
     public String submitForm(@Valid @ModelAttribute("inhousepart") InhousePart part,
                              BindingResult theBindingResult,
                              Model theModel) {
+        return processInhousePartForm(part, theBindingResult, theModel);
+    }
+
+    @PostMapping("/saveinhouse")
+    public String saveInhousePart(@Valid @ModelAttribute("inhousepart") InhousePart part,
+                                  BindingResult theBindingResult,
+                                  Model theModel) {
+        return processInhousePartForm(part, theBindingResult, theModel);
+    }
+
+    private String processInhousePartForm(@Valid @ModelAttribute("inhousepart") InhousePart part,
+                                         BindingResult theBindingResult,
+                                         Model theModel) {
         theModel.addAttribute("inhousepart", part);
 
         if (!part.isValidInventory()) {
@@ -65,5 +78,4 @@ public class AddInhousePartController{
 
             return "confirmationaddpart";}
     }
-
 }

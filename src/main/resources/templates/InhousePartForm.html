@@ -101,7 +101,7 @@
 
             <!-- Part Form -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 animate-slide-up">
-                <form action="#" th:action="@{/showFormAddInPart}" th:object="${inhousepart}" method="POST" class="space-y-6">
+                <form action="#" th:action="@{/saveinhouse}" th:object="${inhousepart}" method="POST" class="space-y-6">
                     <!-- Hidden field for part ID -->
                     <input type="hidden" th:field="*{id}" />
 

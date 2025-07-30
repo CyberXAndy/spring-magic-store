@@ -41,6 +41,19 @@ public class AddOutsourcedPartController {
     public String submitForm(@Valid @ModelAttribute("outsourcedpart") OutsourcedPart part,
                              BindingResult bindingResult,
                              Model theModel) {
+        return processOutsourcedPartForm(part, bindingResult, theModel);
+    }
+
+    @PostMapping("/saveoutsourced")
+    public String saveOutsourcedPart(@Valid @ModelAttribute("outsourcedpart") OutsourcedPart part,
+                                     BindingResult bindingResult,
+                                     Model theModel) {
+        return processOutsourcedPartForm(part, bindingResult, theModel);
+    }
+
+    private String processOutsourcedPartForm(@Valid @ModelAttribute("outsourcedpart") OutsourcedPart part,
+                                            BindingResult bindingResult,
+                                            Model theModel) {
         theModel.addAttribute("outsourcedpart", part);
 
         if (!part.isValidInventory()) {
@@ -65,7 +78,4 @@ public class AddOutsourcedPartController {
             repo.save(part);
         return "confirmationaddpart";}
     }
-
-
-
 }
