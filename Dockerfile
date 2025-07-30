@@ -9,7 +9,7 @@ WORKDIR /app
 COPY . .
 
 # Build the native image.
-RUN mvn -Pnative native:compile -DskipTests
+RUN chmod +x ./mvnw && ./mvnw -Pnative native:compile -DskipTests
 
 
 # --- Final Stage ---
