@@ -55,7 +55,15 @@ public class DatabaseResetService {
     
     @Transactional
     public void performDatabaseReset() {
-        // Clear existing data
+        // Clear existing data - handle many-to-many relationships first
+        // Clear all part-product associations to avoid cascade constraint issues
+        Iterable<Product> products = productRepository.findAll();
+        for (Product product : products) {
+            product.getParts().clear();
+            productRepository.save(product);
+        }
+        
+        // Now safely delete all data
         partRepository.deleteAll();
         productRepository.deleteAll();
         
