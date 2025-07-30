@@ -25,8 +25,8 @@ public class ApplicationStartupRunner implements ApplicationRunner {
             return;
         }
         
-        System.out.println("Application startup - checking database reset requirements...");
-        databaseResetService.checkAndResetIfNeeded();
-        System.out.println("Database reset check completed.");
+        System.out.println("Application startup - performing database reset...");
+        databaseResetService.resetOnStartup();
+        System.out.println("Database reset completed.");
     }
 }

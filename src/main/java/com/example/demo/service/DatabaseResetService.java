@@ -60,6 +60,16 @@ public class DatabaseResetService {
     }
 
     @Transactional
+    public void resetOnStartup() {
+        if (!databaseResetEnabled) {
+            logger.info("Database reset is disabled. Skipping startup reset.");
+            return;
+        }
+        logger.info("Performing database reset on application startup...");
+        performDatabaseReset();
+    }
+
+    @Transactional
     public void performDatabaseReset() {
         logger.info("Starting database reset process...");
         try {
