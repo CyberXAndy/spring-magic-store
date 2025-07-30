@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class DatabaseResetService {
@@ -29,17 +31,19 @@ public class DatabaseResetService {
     @Autowired
     private ProductRepository productRepository;
     
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseResetService.class);
+
     @Transactional
     public void checkAndResetIfNeeded() {
         if (!databaseResetEnabled) {
-            System.out.println("Database reset is disabled in production mode.");
+            logger.info("Database reset is disabled. Skipping check.");
             return;
         }
-        
+        logger.info("Checking if database reset is needed...");
         DatabaseResetTracker tracker = resetTrackerRepository.findFirstByOrderByIdDesc();
         
         if (tracker == null) {
-            // First time running, perform reset
+            logger.info("No previous reset tracker found. Performing initial database reset.");
             performDatabaseReset();
         } else {
             LocalDateTime lastReset = tracker.getLastResetTime();
@@ -47,39 +51,55 @@ public class DatabaseResetService {
             long hoursSinceLastReset = ChronoUnit.HOURS.between(lastReset, now);
             
             if (hoursSinceLastReset >= 24) {
-                // More than 24 hours have passed, perform reset
+                logger.info("More than 24 hours since last reset ({} hours). Performing database reset.", hoursSinceLastReset);
                 performDatabaseReset();
+            } else {
+                logger.info("Database reset not needed yet. Last reset was {} hours ago.", hoursSinceLastReset);
             }
         }
     }
-    
+
     @Transactional
     public void performDatabaseReset() {
-        // Clear existing data - handle many-to-many relationships first
-        // Clear all part-product associations to avoid cascade constraint issues
-        Iterable<Product> products = productRepository.findAll();
-        for (Product product : products) {
-            product.getParts().clear();
-            productRepository.save(product);
+        logger.info("Starting database reset process...");
+        try {
+            // Clear existing data - handle many-to-many relationships first
+            // Clear all part-product associations to avoid cascade constraint issues
+            logger.info("Clearing part-product associations...");
+            Iterable<Product> products = productRepository.findAll();
+            for (Product product : products) {
+                product.getParts().clear();
+                productRepository.save(product);
+            }
+            logger.info("Part-product associations cleared.");
+            
+            // Now safely delete all data
+            logger.info("Deleting all existing parts and products...");
+            partRepository.deleteAll();
+            productRepository.deleteAll();
+            logger.info("Existing parts and products deleted.");
+            
+            // Add default data from BootStrapData
+            logger.info("Adding default data...");
+            addDefaultData();
+            logger.info("Default data added.");
+            
+            // Update or create reset tracker
+            logger.info("Updating database reset tracker...");
+            DatabaseResetTracker tracker = resetTrackerRepository.findFirstByOrderByIdDesc();
+            if (tracker == null) {
+                tracker = new DatabaseResetTracker();
+            } else {
+                tracker.setLastResetTime(LocalDateTime.now());
+            }
+            resetTrackerRepository.save(tracker);
+            logger.info("Database reset tracker updated.");
+            
+            logger.info("Database reset completed successfully at: {}", LocalDateTime.now());
+        } catch (Exception e) {
+            logger.error("Database reset failed: {}", e.getMessage(), e);
+            throw new RuntimeException("Database reset failed", e);
         }
-        
-        // Now safely delete all data
-        partRepository.deleteAll();
-        productRepository.deleteAll();
-        
-        // Add default data from BootStrapData
-        addDefaultData();
-        
-        // Update or create reset tracker
-        DatabaseResetTracker tracker = resetTrackerRepository.findFirstByOrderByIdDesc();
-        if (tracker == null) {
-            tracker = new DatabaseResetTracker();
-        } else {
-            tracker.setLastResetTime(LocalDateTime.now());
-        }
-        resetTrackerRepository.save(tracker);
-        
-        System.out.println("Database reset completed at: " + LocalDateTime.now());
     }
     
     private void addDefaultData() {
