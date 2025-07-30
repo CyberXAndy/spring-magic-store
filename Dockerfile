@@ -16,14 +16,29 @@ RUN mvn -Pnative native:compile -DskipTests
 
 
 # --- Final Stage ---
-# Use a minimal, secure base image for the final container
-FROM gcr.io/distroless/cc-debian12
+# Use Ubuntu base image that includes necessary system libraries
+FROM ubuntu:22.04
+
+# Install required runtime libraries
+RUN apt-get update && apt-get install -y \
+    zlib1g \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a non-root user
+RUN useradd -r -s /bin/false appuser
 
 # Set the working directory
 WORKDIR /app
 
 # Copy only the built native executable from the 'builder' stage
 COPY --from=builder /app/target/demo app
+
+# Change ownership to the non-root user
+RUN chown appuser:appuser /app/app && chmod +x /app/app
+
+# Switch to non-root user
+USER appuser
 
 # Expose port 8080
 EXPOSE 8080
