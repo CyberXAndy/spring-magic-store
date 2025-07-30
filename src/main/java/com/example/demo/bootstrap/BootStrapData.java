@@ -11,18 +11,19 @@ import com.example.demo.service.OutsourcedPartServiceImpl;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.ProductServiceImpl;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- *
- *
- *
- *
+ * Bootstrap data loader - now runs after the database reset check
+ * This will only add data if the database is completely empty
+ * Regular resets are handled by DatabaseResetService
  */
 @Component
+@Order(2) // Run after ApplicationStartupRunner
 public class BootStrapData implements CommandLineRunner {
 
     private final PartRepository partRepository;
@@ -38,6 +39,8 @@ public class BootStrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // Note: ApplicationStartupRunner handles regular database resets
+        // This only runs as a fallback if the database is completely empty
         if (partRepository.count() == 0 && productRepository.count() == 0) {
             OutsourcedPart part1 = new OutsourcedPart();
             part1.setCompanyName("Wand Co.");
