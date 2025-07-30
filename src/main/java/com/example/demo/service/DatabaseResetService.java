@@ -7,6 +7,7 @@ import com.example.demo.repositories.DatabaseResetTrackerRepository;
 import com.example.demo.repositories.PartRepository;
 import com.example.demo.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,9 @@ import java.time.temporal.ChronoUnit;
 
 @Service
 public class DatabaseResetService {
+    
+    @Value("${app.database.reset.enabled:true}")
+    private boolean databaseResetEnabled;
     
     @Autowired
     private DatabaseResetTrackerRepository resetTrackerRepository;
@@ -27,6 +31,11 @@ public class DatabaseResetService {
     
     @Transactional
     public void checkAndResetIfNeeded() {
+        if (!databaseResetEnabled) {
+            System.out.println("Database reset is disabled in production mode.");
+            return;
+        }
+        
         DatabaseResetTracker tracker = resetTrackerRepository.findFirstByOrderByIdDesc();
         
         if (tracker == null) {

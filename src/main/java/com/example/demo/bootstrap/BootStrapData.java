@@ -10,6 +10,7 @@ import com.example.demo.service.OutsourcedPartService;
 import com.example.demo.service.OutsourcedPartServiceImpl;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.ProductServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ import java.util.Optional;
 @Order(2) // Run after ApplicationStartupRunner
 public class BootStrapData implements CommandLineRunner {
 
+    @Value("${app.database.reset.enabled:true}")
+    private boolean databaseResetEnabled;
+
     private final PartRepository partRepository;
     private final ProductRepository productRepository;
 
@@ -39,6 +43,12 @@ public class BootStrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // Skip bootstrap data loading in production if database reset is disabled
+        if (!databaseResetEnabled) {
+            System.out.println("Bootstrap data loading skipped in production mode.");
+            return;
+        }
+        
         // Note: ApplicationStartupRunner handles regular database resets
         // This only runs as a fallback if the database is completely empty
         if (partRepository.count() == 0 && productRepository.count() == 0) {
