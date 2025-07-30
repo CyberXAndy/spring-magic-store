@@ -2,8 +2,8 @@ package com.example.demo.domain;
 
 import com.example.demo.validators.ValidDeletePart;
 
-import javax.persistence.*;
-import javax.validation.constraints.Min;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
