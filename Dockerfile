@@ -1,6 +1,9 @@
 # --- Build Stage ---
-# Use an official GraalVM image that includes JDK 17 and native-image.
+# Use an official Maven image with GraalVM that includes JDK 17 and native-image.
 FROM ghcr.io/graalvm/graalvm-ce:ol9-java17-22.3.2 as builder
+
+# Install Maven
+RUN microdnf install -y maven
 
 # Set the working directory
 WORKDIR /app
@@ -9,7 +12,7 @@ WORKDIR /app
 COPY . .
 
 # Build the native image.
-RUN chmod +x ./mvnw && ./mvnw -Pnative native:compile -DskipTests
+RUN mvn -Pnative native:compile -DskipTests
 
 
 # --- Final Stage ---
