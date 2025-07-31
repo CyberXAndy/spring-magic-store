@@ -5,6 +5,7 @@ import com.example.demo.domain.OutsourcedPart;
 import com.example.demo.domain.Part;
 import com.example.demo.repositories.PartRepository;
 import com.example.demo.service.*;
+import com.example.demo.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,14 @@ public class AddPartController {
     private ApplicationContext context;
 
     @GetMapping("/showPartFormForUpdate")
-    public String showPartFormForUpdate(@RequestParam("partID") int theId,Model theModel){
+    public String showPartFormForUpdate(@RequestParam("partID") String partId, Model theModel){
+        // Validate and sanitize the part ID parameter
+        if (!SecurityUtils.isValidId(partId)) {
+            theModel.addAttribute("error", "Invalid part ID provided.");
+            return "error";
+        }
+        
+        int theId = Integer.parseInt(partId);
 
         PartService repo=context.getBean(PartServiceImpl.class);
         OutsourcedPartService outsourcedrepo=context.getBean(OutsourcedPartServiceImpl.class);
@@ -53,7 +61,14 @@ public class AddPartController {
     }
 
     @GetMapping("/deletepart")
-    public String deletePart(@Valid @RequestParam("partID") int theId,  Model theModel){
+    public String deletePart(@RequestParam("partID") String partId, Model theModel){
+        // Validate and sanitize the part ID parameter
+        if (!SecurityUtils.isValidId(partId)) {
+            theModel.addAttribute("error", "Invalid part ID provided.");
+            return "error";
+        }
+        
+        int theId = Integer.parseInt(partId);
         PartService repo = context.getBean(PartServiceImpl.class);
         Part part=repo.findById(theId);
         if(part.getProducts().isEmpty()){

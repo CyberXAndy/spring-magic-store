@@ -5,6 +5,9 @@ import com.example.demo.validators.ValidProductPrice;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.DecimalMin;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,9 +26,14 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+    
+    @NotBlank(message = "Product name is required")
+    @Size(min = 1, max = 255, message = "Product name must be between 1 and 255 characters")
     String name;
-    @Min(value = 0, message = "Price value must be positive")
+    
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     double price;
+    
     @Min(value = 0, message = "Inventory value must be positive")
     int inv;
     @ManyToMany(cascade=CascadeType.ALL, mappedBy = "products")

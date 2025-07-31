@@ -6,6 +6,7 @@ import com.example.demo.service.PartService;
 import com.example.demo.service.PartServiceImpl;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.ProductServiceImpl;
+import com.example.demo.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -94,7 +95,14 @@ public class AddProductController {
     }
 
     @GetMapping("/showProductFormForUpdate")
-    public String showProductFormForUpdate(@RequestParam("productID") int theId, Model theModel) {
+    public String showProductFormForUpdate(@RequestParam("productID") String productId, Model theModel) {
+        // Validate and sanitize the product ID parameter
+        if (!SecurityUtils.isValidId(productId)) {
+            theModel.addAttribute("error", "Invalid product ID provided.");
+            return "error";
+        }
+        
+        int theId = Integer.parseInt(productId);
         theModel.addAttribute("parts", partService.findAll());
         ProductService repo = context.getBean(ProductServiceImpl.class);
         Product theProduct = repo.findById(theId);
@@ -113,7 +121,14 @@ public class AddProductController {
     }
 
     @GetMapping("/deleteproduct")
-    public String deleteProduct(@RequestParam("productID") int theId, Model theModel) {
+    public String deleteProduct(@RequestParam("productID") String productId, Model theModel) {
+        // Validate and sanitize the product ID parameter
+        if (!SecurityUtils.isValidId(productId)) {
+            theModel.addAttribute("error", "Invalid product ID provided.");
+            return "error";
+        }
+        
+        int theId = Integer.parseInt(productId);
         ProductService productService = context.getBean(ProductServiceImpl.class);
         Product product2=productService.findById(theId);
         for(Part part:product2.getParts()){
@@ -133,7 +148,14 @@ public class AddProductController {
 // make the add and remove buttons work
 
     @GetMapping("/associatepart")
-    public String associatePart(@Valid @RequestParam("partID") int theID, Model theModel){
+    public String associatePart(@RequestParam("partID") String partId, Model theModel){
+        // Validate and sanitize the part ID parameter
+        if (!SecurityUtils.isValidId(partId)) {
+            theModel.addAttribute("error", "Invalid part ID provided.");
+            return "error";
+        }
+        
+        int theID = Integer.parseInt(partId);
     //    theModel.addAttribute("product", product);
     //    Product product1=new Product();
         if (product1.getName()==null) {
@@ -156,7 +178,14 @@ public class AddProductController {
  //        return "confirmationassocpart";
     }
     @GetMapping("/removepart")
-    public String removePart(@RequestParam("partID") int theID, Model theModel){
+    public String removePart(@RequestParam("partID") String partId, Model theModel){
+        // Validate and sanitize the part ID parameter
+        if (!SecurityUtils.isValidId(partId)) {
+            theModel.addAttribute("error", "Invalid part ID provided.");
+            return "error";
+        }
+        
+        int theID = Integer.parseInt(partId);
         theModel.addAttribute("product", product);
       //  Product product1=new Product();
         product1.getParts().remove(partService.findById(theID));
