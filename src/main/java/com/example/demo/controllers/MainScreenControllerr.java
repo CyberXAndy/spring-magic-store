@@ -41,6 +41,11 @@ public class MainScreenControllerr {
         this.partService=partService;
         this.productService=productService;
     }
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/mainscreen";
+    }
+    
     @GetMapping("/mainscreen")
     public String listPartsandProducts(Model theModel, @Param("partkeyword") String partkeyword, @Param("productkeyword") String productkeyword){
         // Sanitize input parameters to prevent XSS attacks
