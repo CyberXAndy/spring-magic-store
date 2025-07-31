@@ -29,9 +29,10 @@ public class SecurityConfig {
                 .contentTypeOptions().and() // Prevent MIME type sniffing
                 .httpStrictTransportSecurity(hstsConfig -> hstsConfig
                     .maxAgeInSeconds(31536000)
-                    .includeSubdomains(true)
+                    .includeSubDomains(true)
                 )
                 .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+                .and()
                 .contentSecurityPolicy("default-src 'self'; " +
                     "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
                     "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
@@ -41,6 +42,7 @@ public class SecurityConfig {
                     "object-src 'none'; " +
                     "base-uri 'self'; " +
                     "form-action 'self'")
+                .and()
                 // Add additional security headers
                 .addHeaderWriter((request, response) -> {
                     response.setHeader("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
