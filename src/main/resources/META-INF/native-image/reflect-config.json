@@ -37,5 +37,11 @@
     "name": "org.hibernate.validator.internal.engine.constraintvalidation.ConstraintValidatorFactoryImpl",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
+  },
+  {
+    "name": "com.example.demo.validators.EnufPartsValidator",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
   }
 ]
