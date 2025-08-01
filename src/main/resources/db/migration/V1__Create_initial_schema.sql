@@ -47,3 +47,12 @@ ALTER TABLE Parts ADD CONSTRAINT chk_inhouse_part
     
 ALTER TABLE Parts ADD CONSTRAINT chk_outsourced_part 
     CHECK ((part_type = 2 AND company_name IS NOT NULL) OR part_type != 2);
+
+-- Create DatabaseResetTracker table for tracking automatic resets
+CREATE TABLE database_reset_tracker (
+    id BIGSERIAL PRIMARY KEY,
+    last_reset_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Add index for performance
+CREATE INDEX idx_reset_tracker_time ON database_reset_tracker(last_reset_time);
