@@ -47,9 +47,9 @@ public class SecurityConfig {
                 .addHeaderWriter((request, response) -> {
                     response.setHeader("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
                     response.setHeader("X-Permitted-Cross-Domain-Policies", "none");
-                    response.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+                    // Relaxed CORS policies to allow external CDN resources
                     response.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-                    response.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+                    response.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
                 })
             )
             
